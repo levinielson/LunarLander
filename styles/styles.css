@@ -1,0 +1,18 @@
+.canvas {
+  display: block;
+  margin: auto;
+}
+
+.button {
+  position: absolute;
+}
+
+.button-container {
+  position: relative;
+}
+
+.game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
