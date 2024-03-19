@@ -29,29 +29,28 @@ MyGame.main = (function (systems, renderer, graphics, states) {
     let renderSmoke = renderer.ParticleSystem(particlesSmoke, graphics, 'assets/smoke-2.png');
     let background = renderer.Background(graphics, 'assets/nebula.jpg');
 
-    let state = states.main();
+    MyGame.state = states.main(graphics);
     //------------------------------------------------------------------
     //
-    // Update the particles
+    // Update the game state
     //
     //------------------------------------------------------------------
     function update(elapsedTime) {
-        //
-        // Tell the existing particles to update themselves
-        particlesSmoke.update(elapsedTime);
-        particlesFire.update(elapsedTime);
+        if (!MyGame.state.pauseGame) {
+
+        }
     }
 
     //------------------------------------------------------------------
     //
-    // Render the particles
+    // Render the game state
     //
     //------------------------------------------------------------------
     function render() {
         graphics.clear();
 
         background.render();
-        state.render();
+        MyGame.state.render();
     }
 
     //------------------------------------------------------------------
@@ -70,5 +69,10 @@ MyGame.main = (function (systems, renderer, graphics, states) {
         requestAnimationFrame(gameLoop);
     };
 
+    MyGame.keyboard = MyGame.input.Keyboard();
+    MyGame.keyboard.registerCommand("ArrowLeft", "Rotate Left", MyGame.movements.rotateLeft);
+    MyGame.keyboard.registerCommand("ArrowRight", "Rotate Right", MyGame.movements.rotateRight);
+    MyGame.keyboard.registerCommand("ArrowUp", "Thrusters", MyGame.movements.thrust);
     requestAnimationFrame(gameLoop);
+
 }(MyGame.systems, MyGame.render, MyGame.graphics, MyGame.states));

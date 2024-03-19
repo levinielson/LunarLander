@@ -1,18 +1,43 @@
 .canvas {
-  display: block;
-  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .button {
   position: absolute;
+  margin: 10px;
 }
 
-.button-container {
+.text {
   position: relative;
+  color: white;
+}
+
+.container {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .game {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.back {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 10px;
+  color: white;
+}
+
+.back:hover {
+  color: #aaaaff
 }

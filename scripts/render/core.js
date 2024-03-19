@@ -11,13 +11,6 @@ MyGame.graphics = (function() {
     //------------------------------------------------------------------
     function clear() {
         context.clearRect(0, 0, canvas.width, canvas.height);
-        let canvasContainer = document.getElementById("canvas-container");
-        // while (canvasContainer.children.length > 1) {
-        //     let child = canvasContainer.firstChild;
-        //     if (child.nodeName != 'CANVAS') {
-        //         canvasContainer.removeChild(canvasContainer.firstChild);
-        //     }
-        // }
     }
 
     // --------------------------------------------------------------
@@ -82,11 +75,29 @@ MyGame.graphics = (function() {
         context.restore();
     }
 
+    function drawLines(points, lineWidth, strokeStyle) {
+        context.save();
+        context.lineWidth = lineWidth;
+        context.strokeStyle = strokeStyle;
+        context.beginPath();
+        context.moveTo(points[0].x / 100 * canvas.width, points[0].y / 100 * canvas.height);
+        for (let i = 1; i < points.length; i++) {
+            context.lineTo(points[i].x / 100 * canvas.width, points[i].y / 100 * canvas.height);
+        }
+        context.lineTo(canvas.width, canvas.height);
+        context.lineTo(0, canvas.height);
+        context.stroke();
+        context.fill();
+    }
+
     let api = {
         clear: clear,
         drawTexture: drawTexture,
         drawRectangle: drawRectangle,
-        drawBackground: drawBackground
+        drawBackground: drawBackground,
+        drawLines: drawLines,
+        width: canvas.width,
+        height: canvas.height
     };
 
     return api;

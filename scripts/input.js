@@ -2,8 +2,17 @@ MyGame.input = (function () {
   function Keyboard() {
       let that = {
           keys: {},
-          handlers: {}
+          handlers: {},
+          names: {},
+          userFriendlyKeyNames: {}
       };
+
+      const keyMap = {
+        "ArrowLeft": "Left Arrow",
+        "ArrowUp": "Up Arrow",
+        "ArrowRight": "Right Arrow",
+        "ArrowDown": "Down Arrow"
+      }
       function keyPress(e) {
           that.keys[e.key] = e.timeStamp;
       }
@@ -11,9 +20,25 @@ MyGame.input = (function () {
           delete that.keys[e.key];
       }
 
-      that.registerCommand = function(key, handler) {
+      that.registerCommand = function(key, name, handler) {
           that.handlers[key] = handler;
-      };
+          that.names[name] = key in keyMap ? keyMap[key] : key.toUpperCase();;
+      }
+
+      that.unregisterCommand = function(oldKey, newKey, name) {
+        for (let key in keyMap) {
+            if (keyMap[key] === oldKey) {
+                oldKey = key;
+            }
+        }
+        that.registerCommand(newKey, name, that.handlers[oldKey]);
+        delete that.handlers[oldKey];
+        console.log(that.names);
+      }
+
+      that.getKeys = function() {
+        return that.names;
+      }
 
       that.update = function(elapsedTime) {
           for (let key in that.keys) {
