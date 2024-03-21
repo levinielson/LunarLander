@@ -25,7 +25,8 @@ MyGame.render.ParticleSystem = function(system, graphics, imageSrc) {
         if (isReady) {
             Object.getOwnPropertyNames(system.particles).forEach( function(value) {
                 let particle = system.particles[value];
-                graphics.drawTexture(image, particle.center, particle.rotation, particle.size);
+                let center = {x: particle.center.x / 100 * graphics.width, y: particle.center.y / 100 * graphics.height}
+                graphics.drawTexture(image, center, particle.rotation, particle.size);
             });
         }
     }

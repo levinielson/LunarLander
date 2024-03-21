@@ -14,10 +14,14 @@ MyGame.states.credits = function(graphics) {
       back.innerHTML = 'BACK';
       back.addEventListener('click', () => {
         destroy();
-        MyGame.state = MyGame.states.main();
+        MyGame.state = MyGame.states.main(graphics);
       });
       container.appendChild(back);
     }
+  }
+
+  function update() {
+
   }
 
   function destroy() {
@@ -31,6 +35,8 @@ MyGame.states.credits = function(graphics) {
 
   let api = {
     render: render,
+    update: update,
+    destroy: destroy,
     pauseGame: true
   }
 

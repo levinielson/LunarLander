@@ -1,5 +1,6 @@
 MyGame.systems.terrain = function() {
   let terrain = [];
+  let safeZone = [];
   
   //-------------------------------------------------------
   //
@@ -8,8 +9,12 @@ MyGame.systems.terrain = function() {
   //
   //---------------------------------------------------------
   function initialize() {
-    startX = Random.nextRange(15, 85);
+    startX = Random.nextRange(15, 50);
+    safeZone2 = Random.nextRange(50, 85);
     startY = Random.nextRange(40, 85);
+
+    terrain = [];
+    safeZone = [];
     terrain.push(
       {
         x: 0,
@@ -18,6 +23,13 @@ MyGame.systems.terrain = function() {
     );
     // safezone start
     terrain.push(
+      {
+        x: startX,
+        y: startY,
+        safeZone: true
+      }
+    );
+    safeZone.push(
       {
         x: startX,
         y: startY,
@@ -33,13 +45,53 @@ MyGame.systems.terrain = function() {
         safeZone: true
       }
     );
+    safeZone.push(
+      {
+        x: startX + 10,
+        y: startY,
+        safeZone: true
+      }
+    );
+
+    // second safezone start
+    terrain.push(
+      {
+        x: safeZone2,
+        y: startY,
+        safeZone: true
+      }
+    );
+    safeZone.push(
+      {
+        x: safeZone2,
+        y: startY,
+        safeZone: true
+      }
+    );
+
+    //second safezone end
+    terrain.push(
+      {
+        x: safeZone2 + 10,
+        y: startY,
+        safeZone: true
+      }
+    );
+    safeZone.push(
+      {
+        x: safeZone2 + 10,
+        y: startY,
+        safeZone: true
+      }
+    );
     terrain.push(
       {
         x: 100,
         y: startY,
       }
     );
-    midpointDisplacement(1, 0, 1);
+    let distance = midpointDisplacement(1, 0, 1);
+    midpointDisplacement(1, distance + 2, distance + 3);
     midpointDisplacement(1, terrain.length - 2, terrain.length - 1);
     console.log(terrain)
   }
@@ -65,8 +117,64 @@ MyGame.systems.terrain = function() {
     return lengthAdded + 1;
   }
 
+  function levelTwo() {
+    terrain = [];
+    safeZone = [];
+
+    startX = Random.nextRange(15, 85);
+    startY = Random.nextRange(40, 85);
+    terrain.push(
+      {
+        x: 0,
+        y: startY
+      }
+    );
+    // safezone start
+    terrain.push(
+      {
+        x: startX,
+        y: startY,
+        safeZone: true
+      }
+    );
+    safeZone.push(
+      {
+        x: startX,
+        y: startY,
+        safeZone: true
+      }
+    );
+
+    // safezone end
+    terrain.push(
+      {
+        x: startX + 10,
+        y: startY,
+        safeZone: true
+      }
+    );
+    safeZone.push(
+      {
+        x: startX + 10,
+        y: startY,
+        safeZone: true
+      }
+    );
+
+    terrain.push(
+      {
+        x: 100,
+        y: startY,
+      }
+    );
+    midpointDisplacement(1, 0, 1);
+    midpointDisplacement(1, terrain.length - 2, terrain.length - 1);
+  }
+
   return {
     initialize: initialize,
-    get terrain() { return terrain; }
+    levelTwo: levelTwo,
+    get terrain() { return terrain; },
+    get safeZones() { return safeZone; }
   }
 }

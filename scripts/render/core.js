@@ -88,6 +88,15 @@ MyGame.graphics = (function() {
         context.lineTo(0, canvas.height);
         context.stroke();
         context.fill();
+        context.restore();
+    }
+
+    function drawText(text, color, size, position) {
+        context.save();
+        context.font = `${size}px Arial`;
+        context.fillStyle = color;
+        context.fillText(text, position.x * canvas.width / 100, position.y * canvas.height / 100);
+        context.restore();
     }
 
     let api = {
@@ -96,6 +105,7 @@ MyGame.graphics = (function() {
         drawRectangle: drawRectangle,
         drawBackground: drawBackground,
         drawLines: drawLines,
+        drawText: drawText,
         width: canvas.width,
         height: canvas.height
     };

@@ -20,9 +20,18 @@ let Random = (function() {
     function nextCircleVector() {
         let angle = Math.random() * 2 * Math.PI;
         return {
+            x: Math.sin(angle),
+            y: Math.cos(angle)
+        };
+    }
+
+    function nextCircleArc(rotation) {
+        let angle = nextRange(70, 80) / 100 * 2 * Math.PI;
+        angle += rotation;
+        return {
             x: Math.cos(angle),
             y: Math.sin(angle)
-        };
+        }
     }
 
     //
@@ -66,7 +75,8 @@ let Random = (function() {
         nextDouble : nextDouble,
         nextRange : nextRange,
         nextCircleVector : nextCircleVector,
-        nextGaussian : nextGaussian
+        nextGaussian : nextGaussian,
+        nextCircleArc: nextCircleArc
     };
 
 }());

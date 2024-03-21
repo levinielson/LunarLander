@@ -17,7 +17,10 @@ MyGame.input = (function () {
           that.keys[e.key] = e.timeStamp;
       }
       function keyRelease(e) {
-          delete that.keys[e.key];
+        if (that.handlers[e.key]) {
+            that.handlers[e.key](-1);
+        }
+        delete that.keys[e.key];
       }
 
       that.registerCommand = function(key, name, handler) {
@@ -33,7 +36,6 @@ MyGame.input = (function () {
         }
         that.registerCommand(newKey, name, that.handlers[oldKey]);
         delete that.handlers[oldKey];
-        console.log(that.names);
       }
 
       that.getKeys = function() {

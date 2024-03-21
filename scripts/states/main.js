@@ -5,7 +5,7 @@ MyGame.states.main = function(graphics) {
 
     if (centerButtons.children.length < 2) {
       makeButton('start', 'Start game', MyGame.states.game, centerButtons);
-      makeButton('scores', 'High Scores', MyGame.states.credits, centerButtons);
+      makeButton('scores', 'High Scores', MyGame.states.highScores, centerButtons);
       makeButton('controls', 'Controls', MyGame.states.controls, centerButtons);
       makeButton('credits', 'Credits', MyGame.states.credits, centerButtons);
     }
@@ -35,9 +35,14 @@ MyGame.states.main = function(graphics) {
     }
   }
 
+  function update(elapsedTime) {
+
+  }
+
   let api = {
     render: render,
     destroy: destroy,
+    update: update,
     pauseGame: true
   }
 

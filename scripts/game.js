@@ -25,20 +25,68 @@ MyGame.main = (function (systems, renderer, graphics, states) {
             lifetime: { mean: 4, stdev: 1 }
         },
         graphics);
+        
     let renderFire = renderer.ParticleSystem(particlesFire, graphics, 'assets/fire.png');
     let renderSmoke = renderer.ParticleSystem(particlesSmoke, graphics, 'assets/smoke-2.png');
     let background = renderer.Background(graphics, 'assets/nebula.jpg');
+    
+    MyGame.sounds = {};
+    MyGame.sounds.explosion = new Audio("assets/explosion.mp3");
+    MyGame.sounds.thrust = new Audio("assets/thrust.mp3");
+    MyGame.sounds.complete = new Audio("assets/levelComplete.mp3");
+    MyGame.thrustParticlesSystem = MyGame.systems.ThrustParticles(
+        {
+          center: { x: 300, y: 300 },
+          size: { mean: 10, stdev: 4 },
+          speed: { mean: 15, stdev: 7.5 },
+          lifetime: { mean: 2, stdev: 1 }
+        }
+      );
+
+    MyGame.explosionParticleSystem = MyGame.systems.ExplosionParticles(
+        {
+            center: { x: 300, y: 300 },
+            size: { mean: 10, stdev: 4 },
+            speed: { mean: 15, stdev: 7.5 },
+            lifetime: { mean: .5, stdev: .125 }
+        }
+    )
+
+    MyGame.ship = MyGame.systems.ship(
+        {
+          center: {x: 20, y: 20},
+          rotation: 0,
+          speed: {x: 0, y: 0},
+          fuel: 150,
+          size: 4,
+          rotationRate: 0.0015,
+          thrustRate: 0.000014,
+          fuelDepletionRate: 0.015
+        },
+        MyGame.thrustParticlesSystem
+      );
+
 
     MyGame.state = states.main(graphics);
+    
+    //----------------------------------------------------------------
+    //
+    // Process input from the user
+    //
+    //----------------------------------------------------------------
+    function processInput(elapsedTime) {
+        if (!MyGame.state.pauseGame) {
+            MyGame.keyboard.update(elapsedTime);
+        }
+    }
+    
     //------------------------------------------------------------------
     //
     // Update the game state
     //
     //------------------------------------------------------------------
     function update(elapsedTime) {
-        if (!MyGame.state.pauseGame) {
-
-        }
+        MyGame.state.update(elapsedTime);
     }
 
     //------------------------------------------------------------------
@@ -61,6 +109,7 @@ MyGame.main = (function (systems, renderer, graphics, states) {
     function gameLoop(time) {
         let elapsedTime = (time - lastTimeStamp);
 
+        processInput(elapsedTime);
         update(elapsedTime);
         lastTimeStamp = time;
 
@@ -70,9 +119,14 @@ MyGame.main = (function (systems, renderer, graphics, states) {
     };
 
     MyGame.keyboard = MyGame.input.Keyboard();
-    MyGame.keyboard.registerCommand("ArrowLeft", "Rotate Left", MyGame.movements.rotateLeft);
-    MyGame.keyboard.registerCommand("ArrowRight", "Rotate Right", MyGame.movements.rotateRight);
-    MyGame.keyboard.registerCommand("ArrowUp", "Thrusters", MyGame.movements.thrust);
+    MyGame.persistence.initialize();
+    MyGame.keyboard.registerCommand(MyGame.persistence.keys["Rotate Left"], "Rotate Left", MyGame.ship.rotateLeft);
+    MyGame.keyboard.registerCommand(MyGame.persistence.keys["Rotate Right"], "Rotate Right", MyGame.ship.rotateRight);
+    MyGame.keyboard.registerCommand(MyGame.persistence.keys["Thrusters"], "Thrusters", MyGame.ship.thrust);
+    MyGame.keyboard.registerCommand("Escape", "Escape", () => { 
+        MyGame.state.destroy();
+        MyGame.state = MyGame.states.main(graphics);
+    });
     requestAnimationFrame(gameLoop);
 
 }(MyGame.systems, MyGame.render, MyGame.graphics, MyGame.states));

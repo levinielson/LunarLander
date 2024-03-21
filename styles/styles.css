@@ -12,12 +12,14 @@
 .text {
   position: relative;
   color: white;
+  font-size: 30px;
+  background-color: black;
 }
 
 .container {
   position: relative;
-  width: 600px;
-  height: 600px;
+  width: 900px;
+  height: 900px;
   display: flex;
   flex-direction: column;
   justify-content: center;

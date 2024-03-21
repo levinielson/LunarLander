@@ -1,4 +1,4 @@
-MyGame.states.controls = function() {
+MyGame.states.controls = function(graphics) {
   const container = document.getElementById('container');
 
   function render() {
@@ -15,21 +15,30 @@ MyGame.states.controls = function() {
       back.innerHTML = 'BACK';
       back.addEventListener('click', () => {
         destroy();
-        MyGame.state = MyGame.states.main();
+        MyGame.state = MyGame.states.main(graphics);
       });
       container.appendChild(back);
       for (let name in names) {
-        makeButton(names[name], name, container);
+        if (name !== "Escape") {
+          makeButton(names[name], name, container);
+        }
       }
     }
     else {
       for (let name in names) {
-        updateButton(names[name], name);
+        if (name !== "Escape") {
+          updateButton(names[name], name);
+        }
       }
     }
   }
 
+  function update(elapsedTime) {
+
+  }
+
   function changeInputWithParams(e, input, name) {
+    MyGame.persistence.addKey(name, e.key);
     MyGame.keyboard.unregisterCommand(input, e.key, name);
   }
   
@@ -64,6 +73,8 @@ MyGame.states.controls = function() {
 
   let api = {
     render: render,
+    update: update,
+    destroy: destroy,
     pauseGame: true
   };
 
